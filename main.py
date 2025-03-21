@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker, Session
 import bcrypt
 
 # Configuración de la base de datos SQLite
-DATABASE_URL = "sqlite:///./users.db"
+DATABASE_URL = "sqlite:///./floristeria.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
@@ -29,7 +29,7 @@ class UserCreate(BaseModel):
 # Iniciar la aplicación FastAPI
 app = FastAPI()
 
-def get_db():
+def get_db(): # Funcion  
     db = SessionLocal()
     try:
         yield db
@@ -40,9 +40,9 @@ def get_db():
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8') # Estandar de la libreria
 
-# Función para verificar contraseñas
+# Función para desencriptar contraseñas
 def verify_password(password: str, hashed_password: str) -> bool:
-    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))  # Estandar de la libreria
 
 # Endpoint para registrar usuarios
 @app.post("/register/")

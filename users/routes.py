@@ -6,8 +6,8 @@ from users.schema import UserCreate
 from encrypt import hash_password
 
 
-router = APIRouter()
 
+router = APIRouter(prefix="/register", tags=["Register"])
 # Endpoint para registrar usuarios
 @router.post("/register/")
 def register(user: UserCreate, db: Session = Depends(get_db)):

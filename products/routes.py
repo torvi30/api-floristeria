@@ -4,7 +4,7 @@ from db import get_db
 from products.model import Product
 from products.schema import ProductCreate, ProductResponse, ProductUpdate
 
-router = APIRouter()
+router = APIRouter(prefix="/products", tags=["Products"])
 
 # Crear un producto
 @router.post("/", response_model=ProductResponse)

@@ -24,9 +24,9 @@ app.add_middleware(
 
 # Incluir las rutas de los endpoints
 app.include_router(login_router, prefix="/api", tags=["Login"])
-app.include_router(user_router)
-app.include_router(product_router)
-app.include_router(order_routes)
-app.include_router(order_detail_routes)
+app.include_router(user_router, prefix="/api", tags=["Users"])
+app.include_router(product_router, prefix="/api", tags=["Products"])
+app.include_router(order_routes, prefix="/api", tags=["Orders"])
+app.include_router(order_detail_routes, prefix="/api", tags=["Order Details"])
 
 

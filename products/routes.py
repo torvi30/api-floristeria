@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from db import get_db
 from products.model import Product
@@ -17,8 +17,15 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
 
 # Obtener todos los productos
 @router.get("/", response_model=list[ProductResponse])
-def get_products(db: Session = Depends(get_db)):
-    return db.query(Product).all()
+def get_products(
+    db: Session = Depends(get_db),
+    type: str | None = Query(None, description="Filter products by type")
+):
+    query = db.query(Product)
+    if type:
+        query = query.filter(Product.type == type)
+    return query.all()
+
 
 # Obtener un producto por ID
 @router.get("/{product_id}", response_model=ProductResponse)

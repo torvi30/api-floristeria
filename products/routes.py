@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from db import get_db
 from products.model import Product
 from products.schema import ProductCreate, ProductResponse, ProductUpdate
@@ -23,7 +24,8 @@ def get_products(
 ):
     query = db.query(Product)
     if type:
-        query = query.filter(Product.type == type)
+        # Agregar comodines para buscar coincidencias parciales
+        query = query.filter(Product.type.ilike(f"%{type}%"))
     return query.all()
 
 

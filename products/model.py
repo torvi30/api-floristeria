@@ -13,5 +13,3 @@ class Product(Base):
     price = Column(Float, nullable=False)
     stock = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
-
-    order_details = relationship("OrderDetail", back_populates="product")

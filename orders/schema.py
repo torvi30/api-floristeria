@@ -1,6 +1,7 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
+# Schemas para OrderDetail
 class OrderDetailBase(BaseModel):
     product_id: int
     quantity: int
@@ -13,6 +14,10 @@ class OrderDetailCreate(OrderDetailBase):
 class OrderDetailResponse(OrderDetailBase):
     id: int
 
+    class Config:
+        from_attributes = True
+
+# Schemas para Order
 class OrderBase(BaseModel):
     customer_name: str
     customer_phone: str
@@ -24,10 +29,10 @@ class OrderCreate(OrderBase):
     pass
 
 class OrderUpdate(BaseModel):
-    customer_name: str | None = None
-    customer_phone: str | None = None
-    status: str | None = None
-    order_detail: List[OrderDetailCreate] | None = None
+    customer_name: Optional[str] = None
+    customer_phone: Optional[str] = None
+    status: Optional[str] = None
+    order_detail: Optional[List[OrderDetailCreate]] = None
 
 class OrderResponse(OrderBase):
     id: int

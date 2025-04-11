@@ -17,8 +17,9 @@ class OrderDetail(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
-    product_id = Column(Integer, nullable=False)
+    product_id = Column(Integer, ForeignKey("products.id"), nullable=False)  # Clave foránea añadida
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
     subtotal = Column(Float, nullable=False)
     order = relationship("Order", back_populates="order_detail")
+    product = relationship("Product", back_populates="order_details")  # Relación añadida

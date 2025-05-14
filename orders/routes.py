@@ -19,7 +19,7 @@ def create_order(order: OrderCreate, db: Session = Depends(get_db)):
         product.stock -= detail.quantity
         subtotal = detail.quantity * detail.unit_price
         total_price += subtotal
-        order_details.append(OrderDetail(**detail.dict(), subtotal=subtotal))
+        order_details.append(OrderDetail(**detail.dict(exclude={"subtotal"}), subtotal=subtotal))
 
     db_order = Order(
         customer_name=order.customer_name,

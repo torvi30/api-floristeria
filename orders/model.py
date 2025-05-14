@@ -23,3 +23,4 @@ class OrderDetail(Base):
     subtotal = Column(Float, nullable=False)
     order = relationship("Order", back_populates="order_detail")
     product = relationship("Product", back_populates="order_details")  # Relación añadida
+ 

@@ -7,7 +7,7 @@ from encrypt import hash_password
 from users.email_utils import send_reset_email  # Función para enviar correos electrónicos
 import secrets
 
-router = APIRouter(prefix="", tags=["User Management"])
+router = APIRouter()
 
 # Endpoint para registrar usuarios
 @router.post("/register/")

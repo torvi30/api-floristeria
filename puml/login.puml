@@ -1,0 +1,32 @@
+@startuml
+!theme spacelab
+
+actor Usuario
+participant "FastAPI Router" as Router
+participant "DB Session" as DB
+participant "Modelo User" as User
+participant "email_utils.py" as Email
+
+Usuario -> Router : POST /password-recovery\n(email)
+Router -> DB : Buscar usuario por email
+alt Usuario existe
+    DB -> User : Generar reset_token
+    DB -> DB : Guardar token
+    Router -> Email : send_reset_email(email, reset_link)
+    Email -> Usuario : Email con enlace de recuperación
+    Router -> Usuario : Correo de recuperación enviado
+else Usuario no existe
+    Router -> Usuario : 404 Usuario no encontrado
+end
+
+Usuario -> Router : POST /reset-password\n(token, new_password)
+Router -> DB : Buscar usuario por reset_token
+alt Token válido
+    DB -> User : Actualizar password_hash\nEliminar reset_token
+    DB -> DB : Guardar cambios
+    Router -> Usuario : Contraseña actualizada exitosamente
+else Token inválido/expirado
+    Router -> Usuario : 400 Token inválido o expirado
+end
+
+@enduml

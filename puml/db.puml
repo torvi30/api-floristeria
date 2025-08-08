@@ -1,0 +1,42 @@
+@startuml
+
+entity "Product" as Product {
+  *id : Integer
+  *image : String
+  *type : String
+  *name : String
+  description : String
+  *price : Float
+  stock : Integer
+  is_active : Boolean
+}
+
+entity "Order" as Order {
+  *id : Integer
+  *customer_name : String
+  *customer_phone : String
+  *total_price : Float
+  status : String
+}
+
+entity "OrderDetail" as OrderDetail {
+  *id : Integer
+  *order_id : Integer
+  *product_id : Integer
+  *quantity : Integer
+  *unit_price : Float
+  *subtotal : Float
+}
+
+entity "User" as User {
+  *id : Integer
+  *username : String
+  *email : String
+  password_hash : String
+  reset_token : String
+}
+
+OrderDetail }o--|| Order : "order"
+OrderDetail }o--|| Product : "product"
+
+@enduml

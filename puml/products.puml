@@ -1,0 +1,50 @@
+@startuml
+!theme spacelab
+
+actor Usuario
+participant "FastAPI Router" as Router
+participant "DB Session" as DB
+participant "Modelo Product" as Product
+
+Usuario -> Router : POST /products\n(Crear producto)
+Router -> DB : db.add(Product)
+DB -> Product : Crear instancia
+DB -> DB : commit, refresh
+Router -> Usuario : Producto creado
+
+Usuario -> Router : GET /products\n(Listar productos)
+Router -> DB : db.query(Product)
+DB -> Product : Obtener lista
+Router -> Usuario : Lista de productos
+
+Usuario -> Router : GET /products/{id}\n(Obtener producto)
+Router -> DB : db.query(Product).filter(id)
+DB -> Product : Buscar por ID
+alt Producto existe
+    Router -> Usuario : Producto encontrado
+else Producto no existe
+    Router -> Usuario : 404 Producto no encontrado
+end
+
+Usuario -> Router : PUT /products/{id}\n(Actualizar producto)
+Router -> DB : db.query(Product).filter(id)
+DB -> Product : Buscar por ID
+alt Producto existe
+    Router -> Product : Actualizar campos
+    DB -> DB : commit, refresh
+    Router -> Usuario : Producto actualizado
+else Producto no existe
+    Router -> Usuario : 404 Producto no encontrado
+end
+
+Usuario -> Router : DELETE /products/{id}\n(Eliminar producto)
+Router -> DB : db.query(Product).filter(id)
+DB -> Product : Buscar por ID
+alt Producto existe
+    DB -> DB : delete, commit
+    Router -> Usuario : Producto eliminado
+else Producto no existe
+    Router -> Usuario : 404 Producto no encontrado
+end
+
+@enduml

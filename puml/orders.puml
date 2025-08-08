@@ -1,0 +1,68 @@
+@startuml
+!theme spacelab
+
+actor Usuario
+participant "FastAPI Router" as Router
+participant "DB Session" as DB
+participant "Modelo Order" as Order
+participant "Modelo OrderDetail" as OrderDetail
+participant "Modelo Product" as Product
+
+Usuario -> Router : POST /orders\n(Crear pedido)
+Router -> DB : Verificar stock productos
+DB -> Product : Consultar stock
+alt Stock suficiente
+    Router -> DB : Descontar stock
+    DB -> Product : Actualizar stock
+    Router -> DB : Crear Order y OrderDetail
+    DB -> Order : Crear instancia
+    DB -> OrderDetail : Crear instancias
+    DB -> DB : commit, refresh
+    Router -> Usuario : Pedido creado
+else Stock insuficiente
+    Router -> Usuario : 400 Stock insuficiente
+end
+
+Usuario -> Router : GET /orders\n(Listar pedidos)
+Router -> DB : db.query(Order)
+DB -> Order : Obtener lista
+Router -> Usuario : Lista de pedidos
+
+Usuario -> Router : GET /orders/{id}\n(Obtener pedido)
+Router -> DB : db.query(Order).filter(id)
+DB -> Order : Buscar por ID
+alt Pedido existe
+    Router -> Usuario : Pedido encontrado
+else Pedido no existe
+    Router -> Usuario : 404 Pedido no encontrado
+end
+
+Usuario -> Router : PUT /orders/{id}\n(Actualizar pedido)
+Router -> DB : db.query(Order).filter(id)
+DB -> Order : Buscar por ID
+alt Pedido existe
+    Router -> DB : Revertir stock productos antiguos
+    DB -> Product : Actualizar stock
+    Router -> DB : Verificar y descontar stock nuevos
+    DB -> Product : Consultar y actualizar stock
+    Router -> DB : Actualizar detalles y total
+    DB -> OrderDetail : Actualizar instancias
+    DB -> DB : commit, refresh
+    Router -> Usuario : Pedido actualizado
+else Pedido no existe
+    Router -> Usuario : 404 Pedido no encontrado
+end
+
+Usuario -> Router : DELETE /orders/{id}\n(Eliminar pedido)
+Router -> DB : db.query(Order).filter(id)
+DB -> Order : Buscar por ID
+alt Pedido existe
+    Router -> DB : Revertir stock productos
+    DB -> Product : Actualizar stock
+    DB -> DB : delete, commit
+    Router -> Usuario : Pedido eliminado
+else Pedido no existe
+    Router -> Usuario : 404 Pedido no encontrado
+end
+
+@enduml

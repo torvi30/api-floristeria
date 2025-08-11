@@ -4,3 +4,4 @@ uvicorn==0.34.0
 sqlalchemy
 pydantic==2.10.6
 email_validator==2.2.0
+dotenv==0.9.9

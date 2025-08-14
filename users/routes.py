@@ -42,7 +42,7 @@ def password_recovery(request: PasswordResetRequest, db: Session = Depends(get_d
     db.refresh(user)
 
     # Enviar correo electrónico con el enlace de recuperación
-    reset_link = f"http://127.0.0.1:5500/floristeria/login/reset-password.html?token={reset_token}"
+    reset_link = f"https://app-floristeria.onrender.com/login/reset-password.html?token={reset_token}"
     send_reset_email(user.email, reset_link)
 
     return {"message": "Correo de recuperación enviado"}

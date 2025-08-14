@@ -11,7 +11,7 @@ def send_reset_email(to_email: str, reset_link: str):
       <body style="font-family: Arial, sans-serif; background-color: #fff8f0; color: #333;">
         <div style="max-width: 500px; margin: auto; border-radius: 10px; border: 1px solid #e0b7b7; background: #fff; box-shadow: 0 2px 8px #f3d6d6;">
           <div style="padding: 24px 32px;">
-            <h2 style="color: #b94e4e; text-align: center;">🌸 Floristería Bella Flor 🌸</h2>
+            <h2 style="color: #b94e4e; text-align: center;">🌸 Floristería Todo En Flor 🌸</h2>
             <p>¡Hola!</p>
             <p>Recibimos una solicitud para restablecer tu contraseña.</p>
             <p>
@@ -21,7 +21,7 @@ def send_reset_email(to_email: str, reset_link: str):
             </p>
             <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
             <hr style="border: none; border-top: 1px solid #f3d6d6;">
-            <p style="font-size: 13px; color: #b94e4e; text-align: center;">Gracias por confiar en Floristería Bella Flor 🌷</p>
+            <p style="font-size: 13px; color: #b94e4e; text-align: center;">Gracias por confiar en Floristería Todo En Flor 🌷</p>
           </div>
         </div>
       </body>
